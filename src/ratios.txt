@@ -1,0 +1,5 @@
+110 : 78 : 45
+110/45 : 78/45 : 1
+
+
+img_width : cell_width : cell_height
