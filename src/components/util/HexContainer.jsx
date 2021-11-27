@@ -1,24 +1,27 @@
 import styled from 'styled-components';
 import BlankHex from '../../assets/BlankHex.png'
 import GreenHex from '../../assets/GreenHex.png'
+import AntWhite from '../../assets/pieces/AntWhite.png'
 
 
 function works(coordinates, setActiveSquare, activeSquare) {
   console.log(`Hex: [${coordinates["x"]}, ${coordinates["y"]}]`);
-  console.log(activeSquare)
+  console.log(activeSquare);
   let new_coords = {"x": coordinates["x"], "y": coordinates["y"]};
-  console.log(new_coords)
-  setActiveSquare(new_coords)
+  setActiveSquare(new_coords, activeSquare)
+  console.log(activeSquare);
 }
 
 function HexContainer(props) {
   const coordinates = props["coordinates"];
+  let temp_state = {...props["activeSquare"]}
   return (
     <img src={
-      coordinates !== props["activeSquare"] ? 
-      BlankHex : 
+      coordinates !== temp_state ? 
+      AntWhite : 
       GreenHex} 
-      width="110px" 
+      width="50px" 
+      draggable="false"
       onClick={() => works(coordinates, props["setActiveSquare"], props["activeSquare"])}/>
   );
 }

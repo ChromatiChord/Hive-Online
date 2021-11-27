@@ -1,6 +1,8 @@
 function Navbar(activePiece, setActivePiece, activePlayer) {
   return (
-    <></>
+    <>
+    Hello
+    </>
   );
 }
 

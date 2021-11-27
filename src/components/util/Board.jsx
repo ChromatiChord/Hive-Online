@@ -5,9 +5,15 @@ import '../../App.css';
 
 let setStateActiveSquare;
 
-function setBetterState(state) {
-  console.log("Here")
+let setBetterState = (state, active) => {
+  console.log("STATE CHANGE")
+  console.log("Input: ");
+  console.log(state)
+  console.log("Initial: ");
+  console.log(active)
   setStateActiveSquare(state)
+  console.log("Initial: ");
+  console.log(active)
 }
 
 
@@ -35,16 +41,16 @@ function createBoard(activeSquare, setActiveSquare) {
   return board_data;
 }
 
-function Board(activePiece, activePlayer, setActivePlayer) {
+function Board(props) {
   const [activeSquare, setActiveSquare] = useState({"x": -1, "y": -1});
   setStateActiveSquare = setActiveSquare;
 
-  const [boardData, setBoardData] = useState(createBoard(activeSquare, setBetterState));
-  console.log(activeSquare)
+  const [boardData, setBoardData] = useState(() => createBoard(activeSquare, setBetterState));
+
 
   return (
     <>
-    <table>
+    <table border="1">
         {boardData[0].map((_, x) => 
           <tr>
             {boardData.map(y => 
@@ -52,8 +58,11 @@ function Board(activePiece, activePlayer, setActivePlayer) {
             )}
           </tr>
         )}
+        
     </table>
-    <Button onClick={() => setBetterState({"x": -2, "y": -2})}>Heelo</Button>
+    <Button onClick={() => setBetterState({"x": -2, "y": -2}, activeSquare)}>SetBetter1</Button>
+    <Button onClick={() => setBetterState({"x": -5, "y": -5}, activeSquare)}>SetBetter2</Button>
+    <Button onClick={() => console.log(activeSquare)}>Seebetter</Button>
     </>
   );
 }
