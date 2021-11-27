@@ -1,28 +1,24 @@
 import styled from 'styled-components';
 import BlankHex from '../../assets/BlankHex.png'
-import GreenHex from '../../assets/GreenHex.png'
 import AntWhite from '../../assets/pieces/AntWhite.png'
+import AntBlack from '../../assets/pieces/AntBlack.png'
+import { useState, useEffect } from 'react';
 
-
-function works(coordinates, setActiveSquare, activeSquare) {
+function hexSelect(coordinates, activeSquare, setActiveSquare) {
   console.log(`Hex: [${coordinates["x"]}, ${coordinates["y"]}]`);
-  console.log(activeSquare);
-  let new_coords = {"x": coordinates["x"], "y": coordinates["y"]};
-  setActiveSquare(new_coords, activeSquare)
-  console.log(activeSquare);
+  setActiveSquare(coordinates);
 }
 
-function HexContainer(props) {
-  const coordinates = props["coordinates"];
-  let temp_state = {...props["activeSquare"]}
+function HexContainer({coordinates, activeSquare, setActiveSquare}) {
+  // let saved_coords = coordinates;
+  const [active, setActive] = useState(activeSquare); 
+
   return (
     <img src={
-      coordinates !== temp_state ? 
-      AntWhite : 
-      GreenHex} 
-      width="50px" 
+      JSON.stringify(activeSquare) !== JSON.stringify(coordinates) ? AntWhite : AntBlack} 
+      width="110px" 
       draggable="false"
-      onClick={() => works(coordinates, props["setActiveSquare"], props["activeSquare"])}/>
+      onClick={() => hexSelect(coordinates, activeSquare, setActiveSquare)}/>
   );
 }
 

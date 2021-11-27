@@ -1,21 +1,7 @@
 import HexContainer from './HexContainer';
-import { Grid, Button } from '@mui/material'
-import { useState } from 'react';
+import { Button } from '@mui/material'
+import { useState, useEffect } from 'react';
 import '../../App.css';
-
-let setStateActiveSquare;
-
-let setBetterState = (state, active) => {
-  console.log("STATE CHANGE")
-  console.log("Input: ");
-  console.log(state)
-  console.log("Initial: ");
-  console.log(active)
-  setStateActiveSquare(state)
-  console.log("Initial: ");
-  console.log(active)
-}
-
 
 function createBoard(activeSquare, setActiveSquare) {
   // construct the board
@@ -23,15 +9,14 @@ function createBoard(activeSquare, setActiveSquare) {
   let board_data = Array(board_size);
 
   // fills the board the necessary coords with hexes
-  // if x AND y are even, fill space with hex
-  // if x AND y are odd, fill space with hex
+  // if x AND y are even, or if x AND y are odd,
+  // fills that space with hex
   for (let x = 0; x < board_data.length; x++) {
     let y_array = Array(board_size);
     for (let y = 0; y < board_data.length; y++) {
-      if ((x % 2 == 0 && y % 2 == 0) || 
-      (x % 2 != 0 && y % 2 != 0)) {
-        let coordinates = {"x": x, "y": y} 
-        y_array[y] = <HexContainer {...{coordinates, activeSquare, setActiveSquare}}/>;
+      if ((x % 2 === 0 && y % 2 === 0) || 
+      (x % 2 !== 0 && y % 2 !== 0)) {
+        y_array[y] = <HexContainer coordinates={{"x": x, "y": y}} activeSquare={activeSquare} setActiveSquare={setActiveSquare} key={`[${activeSquare}, ${x}, ${y}]`}/>;
       } else {
         y_array[y] = "";
       }
@@ -41,30 +26,73 @@ function createBoard(activeSquare, setActiveSquare) {
   return board_data;
 }
 
-function Board(props) {
+
+function Board(props) {  
   const [activeSquare, setActiveSquare] = useState({"x": -1, "y": -1});
-  setStateActiveSquare = setActiveSquare;
+  const [boardData, setBoardData] = useState([]);
 
-  const [boardData, setBoardData] = useState(() => createBoard(activeSquare, setBetterState));
+  setBoardData(createBoard(activeSquare, setActiveSquare));
 
+  // useEffect(() => {
+  //   setBoardData(createBoard(activeSquare, setActiveSquare));
+  // });
+  
+  useEffect(() => {
+    console.log("IT'S BEEN CHANGED: ");
+    console.log(activeSquare);
+  }, [activeSquare]);
 
   return (
-    <>
-    <table border="1">
-        {boardData[0].map((_, x) => 
-          <tr>
-            {boardData.map(y => 
-                <td>{y[x]}</td>
-            )}
-          </tr>
-        )}
-        
-    </table>
-    <Button onClick={() => setBetterState({"x": -2, "y": -2}, activeSquare)}>SetBetter1</Button>
-    <Button onClick={() => setBetterState({"x": -5, "y": -5}, activeSquare)}>SetBetter2</Button>
-    <Button onClick={() => console.log(activeSquare)}>Seebetter</Button>
-    </>
+    <div height="10vh">
+      <table>
+          {boardData.map((x, index_x) => 
+            <tr key={index_x}>
+              {x.map((y, index_y) =>
+                <td key={`[${index_x}, ${index_y}]`}>{y}</td>
+                )}
+            </tr>
+          )}
+          
+      </table>
+      {JSON.stringify(activeSquare)}
+    </div>
   );
 }
 
 export default Board;
+
+
+// ☠️ TEMP CODE GRAVEYARD ☠️
+
+
+  // useEffect(() => {
+  //   console.log("START: ");
+  //   console.log(activeSquare)
+  // }, [activeSquare]);
+
+
+// let boardData = [
+  //   ["a", "b", "c", "d", "e", "f", "g"],
+  //   ["a", "b", "c", "d", "e", "f", "g"],
+//   ["a", "b", "c", "d", "e", "f", "g"],
+//   ["a", "b", "c", "d", "e", "f", "g"],
+//   ["a", "b", "c", "d", "e", "f", "g"],
+//   ["a", "b", "c", "d", "e", "f", "g"],
+//   ["a", "b", "c", "d", "e", "f", "g"]
+// ]
+// boardData.map((x, index_x) => 
+//   x.map((y, index_y) =>
+//     y
+//   )
+// )
+
+
+// boardData.map((_, x) => 
+//   boardData.map(y => 
+//       y[x]
+//   )
+// )
+
+// <Button onClick={() => setBetterState({"x": -2, "y": -2}, activeSquare)}>SetBetter1</Button>
+// <Button onClick={() => setBetterState({"x": -5, "y": -5}, activeSquare)}>SetBetter2</Button>
+// <Button onClick={() => console.log(activeSquare)}>Seebetter</Button>

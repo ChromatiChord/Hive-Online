@@ -1,8 +1,8 @@
 function Navbar(activePiece, setActivePiece, activePlayer) {
   return (
-    <>
-    Hello
-    </>
+    <div height="10vh">
+      Hello
+    </div>
   );
 }
 
