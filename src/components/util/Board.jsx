@@ -31,9 +31,8 @@ function Board(props) {
   const [activeSquare, setActiveSquare] = useState({"x": -1, "y": -1});
   const [boardData, setBoardData] = useState(() => createBoard(activeSquare, setActiveSquare));
   
-  useEffect(() => {
-    console.log("IT'S BEEN CHANGED: ");
-    console.log(activeSquare);
+  useEffect(() => { 
+    setBoardData(createBoard(activeSquare, setActiveSquare));
   }, [activeSquare]);
 
   return (
