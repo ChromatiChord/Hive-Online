@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 import { useState, useEffect } from 'react';
 import '../../App.css';
 
-function createBoard(activeSquare, setActiveSquare) {
+function createBoard() {
   // construct the board
   const board_size = 15;
   let board_data = Array(board_size);
@@ -16,9 +16,13 @@ function createBoard(activeSquare, setActiveSquare) {
     for (let y = 0; y < board_data.length; y++) {
       if ((x % 2 === 0 && y % 2 === 0) || 
       (x % 2 !== 0 && y % 2 !== 0)) {
-        y_array[y] = <HexContainer coordinates={{"x": x, "y": y}} activeSquare={activeSquare} setActiveSquare={setActiveSquare} key={`[${activeSquare}, ${x}, ${y}]`}/>;
+        y_array[y] = {
+          "isHex": true,
+          "pieces": [],
+          "coordinates": {"x": x, "y": y}
+        };
       } else {
-        y_array[y] = "";
+        y_array[y] = {"isHex": false};
       }
     }
     board_data[x] = y_array;
@@ -29,23 +33,22 @@ function createBoard(activeSquare, setActiveSquare) {
 
 function Board(props) {  
   const [activeSquare, setActiveSquare] = useState({"x": -1, "y": -1});
-  const [boardData, setBoardData] = useState(() => createBoard(activeSquare, setActiveSquare));
-  
-  useEffect(() => { 
-    setBoardData(createBoard(activeSquare, setActiveSquare));
-  }, [activeSquare]);
+  const [boardData, setBoardData] = useState(() => createBoard());
 
   return (
     <div height="10vh">
       <table>
           {boardData.map((x, index_x) => 
-            <tr key={index_x}>
+            <tr>
               {x.map((y, index_y) =>
-                <td key={`[${index_x}, ${index_y}]`}>{y}</td>
-                )}
+                <td>{y["isHex"] ? 
+                <HexContainer coordinates={{"x": index_x, "y": index_y}} activeSquare={activeSquare} setActiveSquare={setActiveSquare}/>
+                :
+                ""
+                }</td>
+              )}
             </tr>
           )}
-          
       </table>
       {JSON.stringify(activeSquare)}
     </div>
@@ -80,12 +83,14 @@ export default Board;
 // )
 
 
-// boardData.map((_, x) => 
-//   boardData.map(y => 
-//       y[x]
-//   )
-// )
+// let info = {
+//   "isHex": true,
+//   "pieces": [("Q", "black"), ("B", "white")],
+//   "coordinates": {"x": 0, "y": 0},
+// }
 
-// <Button onClick={() => setBetterState({"x": -2, "y": -2}, activeSquare)}>SetBetter1</Button>
-// <Button onClick={() => setBetterState({"x": -5, "y": -5}, activeSquare)}>SetBetter2</Button>
-// <Button onClick={() => console.log(activeSquare)}>Seebetter</Button>
+// let info = {
+//   "isHex": true,
+//   "pieces": [],
+//   "coordinates": {"x": x, "y": y}
+// }
