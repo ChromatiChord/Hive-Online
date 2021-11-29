@@ -20,13 +20,11 @@ function hexSelect(coordinates, activeSquare, setActiveSquare) {
 
 // figures out which piece to render
 function getCorrectIcon(pieces) {
-  // console.log(pieces)
   if (pieces.length === 0) {
-    return BlankHex
+    return ""
   } 
   else {
     const topmost_piece = pieces.at(-1);
-    console.log(topmost_piece)
     switch(topmost_piece[0]){
       case "Ant":
         return topmost_piece[1] === "white" ? AntWhite : AntBlack;
@@ -44,8 +42,6 @@ function getCorrectIcon(pieces) {
 
 function HexContainer({coords, activeSquare, setActiveSquare, pieces}) {
   const coordinates = coords;
-  // console.log(pieces)
-
   return (
     <>
       <img src={getCorrectIcon(pieces)} 
