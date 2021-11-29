@@ -48,7 +48,7 @@ function createBoard() {
   return board_data;
 }
 
-function highlightMove(boardData, setBoardData, navbarSelection, turn) {
+function getPotentialHexes(boardData, setBoardData, navbarSelection, turn) {
   const center_coord = (board_size - 1) / 2;
   // first turn logic
   if (turn["colour"] === "white" && turn["counter"] === 1) {
@@ -73,16 +73,16 @@ function Board(props) {
   const firstRender = useFirstRender();
 
   useEffect(() => {
-    if (!firstRender) highlightMove(boardData, setBoardData, props["navbarSelection"], props["turn"]);
-    // if (!firstRender) setBoardData(createBoard());
+    if (!firstRender) {
+      getPotentialHexes(boardData, setBoardData, props["navbarSelection"], props["turn"]);
+    }
   }, [props["navbarSelection"]]);
 
   useEffect(() => {
     if (!firstRender) {
-      let activePieceType = boardData[activeSquare["x"]][activeSquare["y"]]["pieces"].at(-1)
-      highlightMove(boardData, setBoardData, activePieceType, props["turn"]);
+      let activePieceType = boardData[activeSquare["x"]][activeSquare["y"]]["pieces"].at(-1)[0]
+      getPotentialHexes(boardData, setBoardData, activePieceType, props["turn"]);
     }
-    // if (!firstRender) setBoardData(createBoard());
     
   }, [activeSquare]);
 
