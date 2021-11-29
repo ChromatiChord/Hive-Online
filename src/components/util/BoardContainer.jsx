@@ -1,8 +1,8 @@
 import Board from './Board'
 
-function BoardContainer(activePiece, activePlayer, setActivePlayer) {
+function BoardContainer(props) {
   return (
-    <><Board {...{activePiece, activePlayer, setActivePlayer}}/></>
+    <><Board {...props}/></>
   );
 }
 

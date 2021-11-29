@@ -8,7 +8,7 @@
 
 table {
 	display: table;
-  margin: 75px
+  margin: 35px
 }
 table tr {
 	display: table-cell;
@@ -21,4 +21,8 @@ td {
   text-align: center;
   height: 45px;
   width: 78px;
+}
+img {
+  position: absolute;
+  width: 110px;
 }
