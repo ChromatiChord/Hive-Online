@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import BlankHex from '../../assets/BlankHex.png'
 import AntWhite from '../../assets/pieces/AntWhite.png'
 import AntBlack from '../../assets/pieces/AntBlack.png'
@@ -10,10 +9,10 @@ import QueenWhite from '../../assets/pieces/QueenWhite.png'
 import QueenBlack from '../../assets/pieces/QueenBlack.png'
 import SpiderWhite from '../../assets/pieces/SpiderWhite.png'
 import SpiderBlack from '../../assets/pieces/SpiderBlack.png'
-import SelectionOverlay from '../../assets/LocationSelector.png'
+import SelectionHex from './SelectionHex'
 import { useState, useEffect } from 'react';
 
-function hexSelect(coordinates, activeSquare, setActiveSquare) {
+function hexSelect(coordinates, setActiveSquare) {
   console.log(`Hex: [${coordinates["x"]}, ${coordinates["y"]}]`);
   setActiveSquare(coordinates);
 }
@@ -40,15 +39,24 @@ function getCorrectIcon(pieces) {
   }
 }
 
-function HexContainer({coords, activeSquare, setActiveSquare, pieces}) {
-  const coordinates = coords;
+function HexContainer({coords, setActiveSquare, pieces, selectionData, placeHexFunc, boardData, setBoardData, turn, setTurn}) {
+  const coordinates = coords; 
   return (
     <>
       <img src={getCorrectIcon(pieces)} 
         draggable="false"
-        onClick={() => hexSelect(coordinates, activeSquare, setActiveSquare)}
-        />
-      {/* <img src={SelectionOverlay}/> */}
+        onClick={() => hexSelect(coordinates, setActiveSquare)}
+      />
+      {selectionData.length !== 0 && 
+      <SelectionHex
+        coords={coords}
+        confirmPlacement={placeHexFunc}
+        selectionData={selectionData[0]}
+        boardData={boardData}
+        setBoardData={setBoardData}
+        turn={turn}
+        setTurn={setTurn}
+      />}
     </>
   );
 }

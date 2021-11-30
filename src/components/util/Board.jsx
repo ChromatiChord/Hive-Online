@@ -3,19 +3,7 @@ import { Button } from '@mui/material'
 import { useState, useEffect } from 'react';
 import '../../App.css';
 import { useFirstRender } from '../logic/FirstRenderCheck';
-import { board_size, traversal_memory, createBoard, getPotentialHexes } from '../logic/BoardFunctions';
-
-
-function placePotentialHexes(boardData, setBoardData, pieceType, turn, coordinates) {
-  let board_copy = boardData;
-  for (const coordinate of coordinates){
-    console.log(coordinate);
-}
-}
-
-function placeHex() {
-  console.log("Hex Placed!");
-}
+import { board_size, traversal_memory, createBoard, getPotentialHexes, selection_hexes, clearSelectionHexes, placePotentialHexes, placeHex } from '../logic/BoardFunctions';
 
 function Board(props) {
   const [activeSquare, setActiveSquare] = useState({"x": -1, "y": -1});
@@ -24,14 +12,16 @@ function Board(props) {
 
   useEffect(() => {
     if (!firstRender) {
-      let coords = getPotentialHexes(boardData, props["navbarSelection"], props["turn"], []);
+      getPotentialHexes(boardData, props["navbarSelection"], props["turn"], []);
+      placePotentialHexes(boardData, setBoardData, props["navbarSelection"], [-1, -1]);
     }
   }, [props["navbarSelection"]]);
 
   useEffect(() => {
     if (!firstRender) {
-      let activePieceType = boardData[activeSquare["x"]][activeSquare["y"]]["pieces"].at(-1)[0]
-      let coords = getPotentialHexes(boardData, activePieceType, props["turn"], [activeSquare["x"], activeSquare["y"]]);
+      let activePieceType = boardData[activeSquare["x"]][activeSquare["y"]]["pieces"].at(-1);
+      getPotentialHexes(boardData, activePieceType, props["turn"], [activeSquare["x"], activeSquare["y"]]);
+      placePotentialHexes(boardData, setBoardData, activePieceType, [activeSquare["x"], activeSquare["y"]]);
     }
     
   }, [activeSquare]);
@@ -45,9 +35,14 @@ function Board(props) {
                 <td key={`${index_x}, ${index_y}`}>{y["isHex"] ? 
                 <HexContainer 
                 coords={{"x": index_x, "y": index_y}} 
-                activeSquare={activeSquare} 
                 setActiveSquare={setActiveSquare}
                 pieces={y["pieces"]}
+                selectionData={y["selection"]}
+                placeHexFunc={placeHex}
+                boardData={boardData}
+                setBoardData={setBoardData}
+                turn={props["turn"]}
+                setTurn={props["setTurn"]}
                 />
                 : ""
                 }</td>
@@ -67,7 +62,10 @@ export default Board;
 // let info = {
 //   "isHex": true,
 //   "pieces": [["Queen", "black"], ["Beetle", "white"]],
-//   "coordinates": {"x": 0, "y": 0},
+//   "selection": [{
+//     "piece": "Queen",
+//     "origin": [0, 0]
+//   }]
 // }
 
 

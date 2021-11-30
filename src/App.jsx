@@ -4,7 +4,7 @@ import BoardContainer from './components/util/BoardContainer'
 import Navbar from './components/util/Navbar'
 import { Button } from '@mui/material';
 
-// this will go somewhere else eventually
+// copy of another function from boardFunctions, will remove on release
 function incrementTurn(turn, setTurn) {
   let return_turn = {...turn};
   const counter = return_turn["counter"];
@@ -17,7 +17,7 @@ function incrementTurn(turn, setTurn) {
 
 function App() {
   const [turn, setTurn] = useState({"counter": 1, "colour": "white"})
-  const [navbarSelection, setNavbarSelection] = useState("None");
+  const [navbarSelection, setNavbarSelection] = useState(["None", "None"]);
 
   return (
     <>

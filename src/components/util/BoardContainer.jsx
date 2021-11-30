@@ -2,7 +2,9 @@ import Board from './Board'
 
 function BoardContainer(props) {
   return (
-    <><Board {...props}/></>
+    <div>
+      <Board {...props}/>
+    </div>
   );
 }
 
