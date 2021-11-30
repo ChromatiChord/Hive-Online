@@ -1,5 +1,5 @@
 ## Documentation
-This is an online Peer to Peer version of the board game Hive Carbon.
+This is an online Peer to Peer version of the board game 'Hive Carbon'.
 
 ## Available Scripts
 
