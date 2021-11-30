@@ -11,7 +11,7 @@ function Board(props) {
   const firstRender = useFirstRender();
 
   useEffect(() => {
-    if (!firstRender) {
+    if (!firstRender && props["navbarSelection"][0] !== "None") {
       getPotentialHexes(boardData, props["navbarSelection"], props["turn"], []);
       placePotentialHexes(boardData, setBoardData, props["navbarSelection"], [-1, -1]);
     }

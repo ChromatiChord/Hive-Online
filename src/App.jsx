@@ -21,10 +21,11 @@ function App() {
 
   return (
     <>
+      <center>
       <BoardContainer {...{navbarSelection, turn, setTurn}} />
-      <Navbar {...{navbarSelection, setNavbarSelection, turn}}/>
-      <Button onClick={() => incrementTurn(turn, setTurn)}>Increment Turn</Button>
       Turn {turn["counter"]}, {turn["colour"]}
+      <Navbar {...{navbarSelection, setNavbarSelection, turn}}/>
+      </center>
     </>
   );
 }

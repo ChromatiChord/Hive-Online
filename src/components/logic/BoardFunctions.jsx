@@ -1,5 +1,5 @@
 // ideal number is 23
-export const board_size = 15;
+export const board_size = 19;
 
 export const traversal_memory = {
   "UP": [0, -2],

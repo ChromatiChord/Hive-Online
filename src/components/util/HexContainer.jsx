@@ -12,9 +12,12 @@ import SpiderBlack from '../../assets/pieces/SpiderBlack.png'
 import SelectionHex from './SelectionHex'
 import { useState, useEffect } from 'react';
 
-function hexSelect(coordinates, setActiveSquare) {
-  console.log(`Hex: [${coordinates["x"]}, ${coordinates["y"]}]`);
-  setActiveSquare(coordinates);
+function hexSelect(coordinates, setActiveSquare, boardData, turn) {
+  console.log(`Hex Coordinates: [${coordinates["x"]}, ${coordinates["y"]}]`);
+  let hex_data = boardData[coordinates["x"]][coordinates["y"]]["pieces"];
+  if (hex_data.length !== 0) {
+    if (hex_data.at(-1)[1] === turn["colour"]) setActiveSquare(coordinates);
+  }
 }
 
 // figures out which piece to render
@@ -45,7 +48,7 @@ function HexContainer({coords, setActiveSquare, pieces, selectionData, placeHexF
     <>
       <img src={getCorrectIcon(pieces)} 
         draggable="false"
-        onClick={() => hexSelect(coordinates, setActiveSquare)}
+        onClick={() => hexSelect(coordinates, setActiveSquare, boardData, turn)}
       />
       {selectionData.length !== 0 && 
       <SelectionHex
