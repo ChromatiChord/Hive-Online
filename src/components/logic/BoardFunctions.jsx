@@ -1,4 +1,4 @@
-// ideal number is 23
+// ideal number is ~23
 export const board_size = 19;
 
 export const traversal_memory = {
@@ -24,8 +24,9 @@ function incrementTurn(turn, setTurn) {
 // array coordinates of hexes that have a selection overlay on them
 export let selection_hexes = []
 
+
+// creates the inital blank board
 export function createBoard() {
-  // construct the board
   let board_data = Array(board_size);
   
   // fills the board the necessary coords with hexes
@@ -47,16 +48,11 @@ export function createBoard() {
     }
     board_data[x] = y_array;
   }
-
-  // debug board data
-  // const center_coord = (board_size - 1) / 2;
-  // board_data[center_coord][center_coord - 2]["pieces"].push(["Ant", "black"]);
-  // board_data[center_coord + 1][center_coord - 1]["pieces"].push(["Queen", "white"]);
-
   return board_data;
 }
 
 // this is the master function where piece movement calculations will occur
+// calculates which potential squares a selected piece can move to/be placed on
 export function getPotentialHexes(boardData, pieceType, turn, origin) {
   const center_coord = (board_size - 1) / 2;
   // first turn logic
@@ -75,7 +71,6 @@ export function getPotentialHexes(boardData, pieceType, turn, origin) {
   // INSERT PIECE MOVEMENT LOGIC HERE
   // at the moment it just assumes the entire board is fair game
   else {
-    console.log(`Funky Stuff`);
     let full_board = [];
     for (let x = 0; x < board_size; x++) {  
       for (let y = 0; y < board_size; y++) {
@@ -86,19 +81,17 @@ export function getPotentialHexes(boardData, pieceType, turn, origin) {
   }
 }
 
+// removes all selection hexes from the board
 export function clearSelectionHexes(boardData, setBoardData) {
   let board_data_copy = [...boardData];
-
-  for (let x = 0; x < board_size; x++) {
-    for (let y = 0; y < board_size; y++) {
-      board_data_copy[x][y]["selection"] = [];
-    }
+  for (const coordinates of selection_hexes){
+    board_data_copy[coordinates[0]][coordinates[1]]["selection"] = [];
   }
 
   setBoardData(board_data_copy);
 }
 
-
+// places selection hexes on the board according to selection_hexes
 export function placePotentialHexes(boardData, setBoardData, pieceType, origin) {
   clearSelectionHexes(boardData, setBoardData);
   let board_copy = [...boardData];
@@ -111,6 +104,8 @@ export function placePotentialHexes(boardData, setBoardData, pieceType, origin) 
   setBoardData(board_copy);
 }
 
+// is called when the player confirms they wish to place
+// a hex on a selection tile
 export function placeHex(coords, selectionData, boardData, setBoardData, turn, setTurn) {
   let board_data_copy = [...boardData];
   let origin = selectionData["origin"];

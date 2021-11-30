@@ -3,27 +3,27 @@ import { Button } from '@mui/material'
 import { useState, useEffect } from 'react';
 import '../../App.css';
 import { useFirstRender } from '../logic/FirstRenderCheck';
-import { board_size, traversal_memory, createBoard, getPotentialHexes, selection_hexes, clearSelectionHexes, placePotentialHexes, placeHex } from '../logic/BoardFunctions';
+import { createBoard, getPotentialHexes, placePotentialHexes, placeHex } from '../logic/BoardFunctions';
 
 function Board(props) {
   const [activeSquare, setActiveSquare] = useState({"x": -1, "y": -1});
   const [boardData, setBoardData] = useState(() => createBoard());
   const firstRender = useFirstRender();
 
+  // these useEffects are called when a tile is selected
+  // on the navbar or on the grid
   useEffect(() => {
     if (!firstRender && props["navbarSelection"][0] !== "None") {
       getPotentialHexes(boardData, props["navbarSelection"], props["turn"], []);
       placePotentialHexes(boardData, setBoardData, props["navbarSelection"], [-1, -1]);
     }
   }, [props["navbarSelection"]]);
-
   useEffect(() => {
     if (!firstRender) {
       let activePieceType = boardData[activeSquare["x"]][activeSquare["y"]]["pieces"].at(-1);
       getPotentialHexes(boardData, activePieceType, props["turn"], [activeSquare["x"], activeSquare["y"]]);
       placePotentialHexes(boardData, setBoardData, activePieceType, [activeSquare["x"], activeSquare["y"]]);
     }
-    
   }, [activeSquare]);
 
   return (
@@ -55,30 +55,3 @@ function Board(props) {
 }
 
 export default Board;
-
-
-// ☠️ TEMP CODE GRAVEYARD ☠️
-
-// let info = {
-//   "isHex": true,
-//   "pieces": [["Queen", "black"], ["Beetle", "white"]],
-//   "selection": [{
-//     "piece": "Queen",
-//     "origin": [0, 0]
-//   }]
-// }
-
-
-// // when a token is selected in the navbar, calculates
-// // which hexes the token can be placed on
-
-// function highlightPlace(boardData, setBoardData, navbarSelection) {
-
-// }
-
-
-// let data = [
-//   [0, 1, 2],
-//   [0, 1, 2],
-//   [0, 1, 2]
-// ]

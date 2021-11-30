@@ -42,9 +42,11 @@ function getCorrectIcon(icon, colour, setNavSelect, blackPieceCount, whitePieceC
     default:
       icon_img = SpiderWhite;
   }
+  // styling to ensure pieces are disabled when their count reaches 0
   const img_style = {
     pointerEvents: (colour === "white" ? (whitePieceCount[icon] <= 0 ? "none" : "auto") : (blackPieceCount[icon] <= 0 ? "none" : "auto")),
-    opacity: (colour === "white" ? (whitePieceCount[icon] <= 0 ? "0.3" : "1") : (blackPieceCount[icon] <= 0 ? "0.3" : "1"))
+    opacity: (colour === "white" ? (whitePieceCount[icon] <= 0 ? "0.3" : "1") : (blackPieceCount[icon] <= 0 ? "0.3" : "1")),
+    draggable: false
   }
   return <img src={icon_img} style={img_style} onClick={() => setNavSelect([icon, colour])}/>
 }
@@ -74,7 +76,6 @@ function Navbar(props) {
       if (JSON.stringify(cur_selection) !== JSON.stringify(["None", "None"])) {
         if (active_colour === "black") { 
           let wpc = {...whitePieceCount}
-          console.log(wpc)
           wpc[cur_selection[0]] = wpc[cur_selection[0]] - 1;
           setWhitePieceCount(wpc);
         }
@@ -85,9 +86,6 @@ function Navbar(props) {
         }
         props["setNavbarSelection"](["None", "None"]);
       }
-      console.log("TURNED!");
-      console.log(whitePieceCount);
-      console.log(blackPieceCount);
     }
   }, [props["turn"]]);
 
