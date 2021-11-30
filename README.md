@@ -5,8 +5,8 @@ This is an online Peer to Peer version of the board game 'Hive Carbon'.
 
 ### `yarn install`
 
-To install the necessary dependencies
+To install the necessary dependencies.
 
 ### `yarn start`
 
-To start the website
+To start the website.
