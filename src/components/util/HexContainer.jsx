@@ -1,16 +1,5 @@
-import BlankHex from '../../assets/BlankHex.png'
-import AntWhite from '../../assets/pieces/AntWhite.png'
-import AntBlack from '../../assets/pieces/AntBlack.png'
-import BeetleWhite from '../../assets/pieces/BeetleWhite.png'
-import BeetleBlack from '../../assets/pieces/BeetleBlack.png'
-import GrassWhite from '../../assets/pieces/GrassWhite.png'
-import GrassBlack from '../../assets/pieces/GrassBlack.png'
-import QueenWhite from '../../assets/pieces/QueenWhite.png'
-import QueenBlack from '../../assets/pieces/QueenBlack.png'
-import SpiderWhite from '../../assets/pieces/SpiderWhite.png'
-import SpiderBlack from '../../assets/pieces/SpiderBlack.png'
+import { HexIcons } from '../../assets/ImageDatabase';
 import SelectionHex from './SelectionHex'
-import { useState, useEffect } from 'react';
 
 function hexSelect(coordinates, setActiveSquare, boardData, turn) {
   console.log(`Hex Coordinates: [${coordinates["x"]}, ${coordinates["y"]}]`);
@@ -29,15 +18,15 @@ function getCorrectIcon(pieces) {
     const topmost_piece = pieces.at(-1);
     switch(topmost_piece[0]){
       case "Ant":
-        return topmost_piece[1] === "white" ? AntWhite : AntBlack;
+        return topmost_piece[1] === "white" ? HexIcons["AntWhite"] : HexIcons["AntBlack"];
       case "Beetle":
-        return topmost_piece[1] === "white" ? BeetleWhite : BeetleBlack;
+        return topmost_piece[1] === "white" ? HexIcons["BeetleWhite"] : HexIcons["BeetleBlack"];
       case "Grasshopper":
-        return topmost_piece[1] === "white" ? GrassWhite : GrassBlack;
+        return topmost_piece[1] === "white" ? HexIcons["GrassWhite"] : HexIcons["GrassBlack"];
       case "Spider":
-        return topmost_piece[1] === "white" ? SpiderWhite : SpiderBlack;
+        return topmost_piece[1] === "white" ? HexIcons["SpiderWhite"] : HexIcons["SpiderBlack"];
       case "Queen":
-        return topmost_piece[1] === "white" ? QueenWhite : QueenBlack;
+        return topmost_piece[1] === "white" ? HexIcons["QueenWhite"] : HexIcons["QueenBlack"];
     }
   }
 }

@@ -1,16 +1,7 @@
 import { Button, Grid } from "@mui/material";
 import { useFirstRender } from '../logic/FirstRenderCheck';
 import { useState, useEffect } from 'react';
-import AntWhite from '../../assets/pieces/AntWhite.png'
-import AntBlack from '../../assets/pieces/AntBlack.png'
-import BeetleWhite from '../../assets/pieces/BeetleWhite.png'
-import BeetleBlack from '../../assets/pieces/BeetleBlack.png'
-import GrassWhite from '../../assets/pieces/GrassWhite.png'
-import GrassBlack from '../../assets/pieces/GrassBlack.png'
-import QueenWhite from '../../assets/pieces/QueenWhite.png'
-import QueenBlack from '../../assets/pieces/QueenBlack.png'
-import SpiderWhite from '../../assets/pieces/SpiderWhite.png'
-import SpiderBlack from '../../assets/pieces/SpiderBlack.png'
+import { HexIcons } from '../../assets/ImageDatabase';
 
 const navbar_styling = {
   backgroundColor: "#e3e3e3",
@@ -25,22 +16,22 @@ function getCorrectIcon(icon, colour, setNavSelect, blackPieceCount, whitePieceC
   let icon_img;
   switch(icon) {
     case "Ant":
-      icon_img = colour === "white" ? AntWhite : AntBlack;
+      icon_img = colour === "white" ? HexIcons["AntWhite"] : HexIcons["AntBlack"];
       break;
     case "Beetle":
-      icon_img = colour === "white" ? BeetleWhite : BeetleBlack;
+      icon_img = colour === "white" ? HexIcons["BeetleWhite"] : HexIcons["BeetleBlack"];
       break;
     case "Grasshopper":
-      icon_img = colour === "white" ? GrassWhite : GrassBlack;
+      icon_img = colour === "white" ? HexIcons["GrassWhite"] : HexIcons["GrassBlack"];
       break;
     case "Spider":
-      icon_img = colour === "white" ? SpiderWhite : SpiderBlack;
+      icon_img = colour === "white" ? HexIcons["SpiderWhite"] : HexIcons["SpiderBlack"];
       break;
     case "Queen":
-      icon_img = colour === "white" ? QueenWhite : QueenBlack;
+      icon_img = colour === "white" ? HexIcons["QueenWhite"] : HexIcons["QueenBlack"];
       break;
     default:
-      icon_img = SpiderWhite;
+      break;
   }
   // styling to ensure pieces are disabled when their count reaches 0
   const img_style = {
@@ -68,10 +59,10 @@ function Navbar(props) {
     "Queen": 1
   })
 
+  // decrements piece counts and updates navbuttons
   const firstRender = useFirstRender();
   useEffect(() => {
     if (!firstRender) {
-      // getPotentialHexes(boardData, props["navbarSelection"], props["turn"], []);
       let cur_selection = props["navbarSelection"];
       if (JSON.stringify(cur_selection) !== JSON.stringify(["None", "None"])) {
         if (active_colour === "black") { 

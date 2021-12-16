@@ -6,7 +6,13 @@ function SelectionHex({coords, confirmPlacement, selectionData, boardData, setBo
     <>
       <img 
       src={SelectionOverlay}
-      onClick={() => confirmPlacement(coords, selectionData, boardData, setBoardData, turn, setTurn)}/>
+      onClick={() => confirmPlacement(coords, selectionData, boardData, setBoardData, turn, setTurn)}
+      style={{
+        width: "45px",
+        marginTop: "14px",
+        marginLeft: "14px"
+      }}
+      />
     </>
   );
 }

@@ -1,5 +1,8 @@
+import Graph from "graph-data-structure";
+
 // ideal number is ~23
 export const board_size = 19;
+const center_coord = (board_size - 1) / 2;
 
 export const traversal_memory = {
   "UP": [0, -2],
@@ -9,6 +12,8 @@ export const traversal_memory = {
   "DOWN_LEFT": [-1, 1],
   "UP_LEFT": [-1, -1]
 }
+
+let empty_hex_graph = Graph()
 
 // increments the turn by one
 function incrementTurn(turn, setTurn) {
@@ -42,11 +47,24 @@ export function createBoard() {
           "pieces": [],
           "selection": []
         };
+        empty_hex_graph.addNode(`[${x},${y}]`);
       } else {
         y_array[y] = {"isHex": false};
       }
     }
     board_data[x] = y_array;
+  }
+  // connects all nodes to their edges
+  for (let x = 0; x < board_data.length; x++) {
+    for (let y = 0; y < board_data.length; y++) {
+      for (const direction in traversal_memory) {
+        const adjacent_x = x + traversal_memory[direction][0];
+        const adjacent_y = y + traversal_memory[direction][1];
+        if (!(adjacent_x < 0 || adjacent_x >= board_size || adjacent_y < 0 || adjacent_y >= board_size)) {
+          empty_hex_graph.addEdge(`[${x},${y}]`, `[${adjacent_x},${adjacent_y}]`);
+        }
+      }
+    }
   }
   return board_data;
 }
@@ -54,7 +72,6 @@ export function createBoard() {
 // this is the master function where piece movement calculations will occur
 // calculates which potential squares a selected piece can move to/be placed on
 export function getPotentialHexes(boardData, pieceType, turn, origin) {
-  const center_coord = (board_size - 1) / 2;
   // first turn logic
   if (turn["colour"] === "white" && turn["counter"] === 1) {
     selection_hexes = [[center_coord, center_coord]];
@@ -68,21 +85,60 @@ export function getPotentialHexes(boardData, pieceType, turn, origin) {
     }
     selection_hexes = return_coords;
   }
-  // INSERT PIECE MOVEMENT LOGIC HERE
-  // at the moment it just assumes the entire board is fair game
+  // PIECE PLACEMENT AND MOVEMENT LOGIC
   else {
     let full_board = [];
-    for (let x = 0; x < board_size; x++) {  
-      for (let y = 0; y < board_size; y++) {
-        full_board.push([x, y]);
+    const hexes = empty_hex_graph.nodes();
+    // incoming from navbar
+    if (origin.length === 0) {
+      for (const hex of hexes) {
+        const hex_x = parseInt(hex.split(",")[0].substring(1));
+        const hex_y = parseInt(hex.split(",")[1].slice(0, -1));
+        let white_count = 0;
+        let black_count = 0;
+        for (const adjacent_hex of empty_hex_graph.adjacent(hex)) {
+          const adjacent_hex_x = parseInt(adjacent_hex.split(",")[0].substring(1));
+          const adjacent_hex_y = parseInt(adjacent_hex.split(",")[1].slice(0, -1));
+          if (boardData[adjacent_hex_x][adjacent_hex_y]["pieces"]?.length !== 0) {
+            if (boardData[adjacent_hex_x][adjacent_hex_y]["pieces"]?.at(-1)[1] === "white") {
+              white_count += 1;
+            } else {
+              black_count += 1;
+            }
+          }
+          // if filled
+          // get piece colour
+        }
+        const white_potential = (turn["colour"] === "white" && white_count > 0 && black_count === 0);
+        const black_potential = (turn["colour"] === "black" && black_count > 0 && white_count === 0)
+        if ((white_potential || black_potential) && boardData[hex_x][hex_y]["pieces"]?.length === 0) {
+          full_board.push([hex_x, hex_y]);
+        }
       }
-    }  
+    } 
+    // moving a piece
+    else {
+      for (const hex of hexes) {
+        const hex_x = parseInt(hex.split(",")[0].substring(1));
+        const hex_y = parseInt(hex.split(",")[1].slice(0, -1));
+        if (boardData[hex_x][hex_y]["pieces"]?.length !== 0) {
+          for (const adjacent_hex of empty_hex_graph.adjacent(hex)) {
+            const adjacent_hex_x = parseInt(adjacent_hex.split(",")[0].substring(1));
+            const adjacent_hex_y = parseInt(adjacent_hex.split(",")[1].slice(0, -1));
+            if (boardData[adjacent_hex_x][adjacent_hex_y]["pieces"]?.length === 0 || pieceType[0] === "Beetle") {
+              // check it wouldn't break the hive
+              full_board.indexOf([adjacent_hex_x, adjacent_hex_y]) === -1 && full_board.push([adjacent_hex_x, adjacent_hex_y])
+            }
+          }
+        }
+      }
+    }
     selection_hexes = full_board;
   }
 }
 
 // removes all selection hexes from the board
-export function clearSelectionHexes(boardData, setBoardData) {
+function clearSelectionHexes(boardData, setBoardData) {
   let board_data_copy = [...boardData];
   for (const coordinates of selection_hexes){
     board_data_copy[coordinates[0]][coordinates[1]]["selection"] = [];
@@ -120,3 +176,26 @@ export function placeHex(coords, selectionData, boardData, setBoardData, turn, s
   setBoardData(board_data_copy);
   incrementTurn(turn, setTurn);
 }
+
+
+
+
+// CODE GRAVEYARD
+
+
+// for (let x = 0; x < board_size; x++) {  
+//   for (let y = 0; y < board_size; y++) {
+//     if (!(boardData[x][y]["pieces"]?.length !== 0)) {
+//       full_board.push([x, y]);
+//     }
+//   }
+// }  
+
+
+// for (let x = 0; x < board_size; x++) {  
+//   for (let y = 0; y < board_size; y++) {
+//     if (!(pieceType[0] !== "Beetle" && boardData[x][y]["pieces"]?.length !== 0)) {
+//       full_board.push([x, y]);
+//     }
+//   }
+// }  

@@ -2,10 +2,8 @@ import './App.css';
 import { useState } from 'react';
 import BoardContainer from './components/util/BoardContainer'
 import Navbar from './components/util/Navbar'
-import { Button } from '@mui/material';
 
-function App() {
-
+function Game() {
   const [turn, setTurn] = useState({"counter": 1, "colour": "white"})
   const [navbarSelection, setNavbarSelection] = useState(["None", "None"]);
 
@@ -20,4 +18,4 @@ function App() {
   );
 }
 
-export default App;
+export default Game;
