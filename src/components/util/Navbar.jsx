@@ -103,7 +103,7 @@ function Navbar(props) {
             margin: "5%",
             border: "2.5px solid black",
             borderRadius: "50%",
-            width: "2.1vw",
+            width: "2.3vw",
             backgroundColor: "white"
           }}
           >

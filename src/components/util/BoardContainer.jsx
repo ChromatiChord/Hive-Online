@@ -7,7 +7,8 @@ const container_style = {
   width: "80vw", 
   borderRadius: "15px", 
   marginTop: "10px",
-  overflow: "auto"
+  overflow: "auto",
+  backgroundColor: "white"
 }
 
 function BoardContainer(props) {

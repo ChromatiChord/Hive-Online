@@ -13,7 +13,7 @@ function App() {
     <>
       <center>
         <Typography 
-        variant="h4"
+        variant="h2"
         sx={{
           fontFamily: "Roboto",
           margin: "14px"
