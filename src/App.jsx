@@ -1,31 +1,20 @@
 import './App.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import BoardContainer from './components/util/BoardContainer'
-import Navbar from './components/util/Navbar'
-import { Button, Typography } from '@mui/material';
+import PlaySpace from './components/util/PlaySpace';
+import Login from './components/util/Login';
 
-function App() {
-
-  const [turn, setTurn] = useState({"counter": 1, "colour": "white"})
-  const [navbarSelection, setNavbarSelection] = useState(["None", "None"]);
-
+const App = () => {
+  const [isLogged, setIsLogged] = useState(false)
   return (
-    <>
-      <center>
-        <Typography 
-        variant="h2"
-        sx={{
-          fontFamily: "Roboto",
-          margin: "14px"
-        }}
-        >
-          Turn {turn["counter"]}, {turn["colour"].charAt(0).toUpperCase() + turn["colour"].slice(1)}
-        </Typography>
-        <BoardContainer {...{navbarSelection, turn, setTurn}} />
-        <Navbar {...{navbarSelection, setNavbarSelection, turn}}/>
-      </center>
-    </>
-  );
+    <Router>      
+        <Routes>
+          <Route exact path="/" element={<Login {...{setIsLogged}}/>}/>
+          <Route path="/play" element={!isLogged ? <Navigate replace to={"/"}/> : <PlaySpace/>}/>
+          <Route path="*" element={<Navigate replace to={!isLogged ? "/" : "/play"}/>}/>
+        </Routes>
+    </Router>
+  )
 }
 
 export default App;
