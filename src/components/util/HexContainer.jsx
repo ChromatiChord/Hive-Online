@@ -2,7 +2,6 @@ import { HexIcons } from '../../assets/ImageDatabase';
 import SelectionHex from './SelectionHex'
 
 function hexSelect(coordinates, setActiveSquare, boardData, turn) {
-  console.log(`Hex Coordinates: [${coordinates["x"]}, ${coordinates["y"]}]`);
   let hex_data = boardData[coordinates["x"]][coordinates["y"]]["pieces"];
   if (hex_data.length !== 0) {
     if (hex_data.at(-1)[1] === turn["colour"]) setActiveSquare(coordinates);

@@ -66,7 +66,26 @@ export function createBoard() {
       }
     }
   }
+  // let serialized_hex_graph = empty_hex_graph.serialize();
+  // console.log(empty_hex_graph.nodes())
+  // let new_graph = Graph()
+  // new_graph.deserialize(serialized_hex_graph);
+  // console.log(new_graph.nodes())
+  // console.log(new_graph.nodes().filter(x => !empty_hex_graph.nodes().includes(x)))
+  // console.log(JSON.stringify(empty_hex_graph.nodes()) === JSON.stringify(new_graph.nodes()));
   return board_data;
+}
+
+function checkBreakHive(coordinate) {
+
+  // const initial_nodes = empty_hex_graph.nodes();
+  // empty_hex_graph.removeNode(coordinate);
+  // const broken_nodes = empty_hex_graph.depthFirstSearch(["[9,9]"]);
+  // empty_hex_graph.removeNode(coordinate);
+  // if (JSON.stringify(initial_nodes) !== JSON.stringify(broken_nodes)) {
+  //   return true
+  // }
+
 }
 
 // this is the master function where piece movement calculations will occur
@@ -87,11 +106,14 @@ export function getPotentialHexes(boardData, pieceType, turn, origin) {
   }
   // PIECE PLACEMENT AND MOVEMENT LOGIC
   else {
-    let full_board = [];
-    const hexes = empty_hex_graph.nodes();
-    // incoming from navbar
-    if (origin.length === 0) {
-      for (const hex of hexes) {
+    let selection_hex_stage = [];
+
+    for (const hex of empty_hex_graph.nodes()) {
+      const hex_x = parseInt(hex.split(",")[0].substring(1));
+      const hex_y = parseInt(hex.split(",")[1].slice(0, -1));
+
+      // incoming from navbar
+      if (origin.length === 0) {
         const hex_x = parseInt(hex.split(",")[0].substring(1));
         const hex_y = parseInt(hex.split(",")[1].slice(0, -1));
         let white_count = 0;
@@ -106,34 +128,30 @@ export function getPotentialHexes(boardData, pieceType, turn, origin) {
               black_count += 1;
             }
           }
-          // if filled
-          // get piece colour
         }
         const white_potential = (turn["colour"] === "white" && white_count > 0 && black_count === 0);
         const black_potential = (turn["colour"] === "black" && black_count > 0 && white_count === 0)
         if ((white_potential || black_potential) && boardData[hex_x][hex_y]["pieces"]?.length === 0) {
-          full_board.push([hex_x, hex_y]);
+          selection_hex_stage.push([hex_x, hex_y]);
         }
       }
-    } 
-    // moving a piece
-    else {
-      for (const hex of hexes) {
-        const hex_x = parseInt(hex.split(",")[0].substring(1));
-        const hex_y = parseInt(hex.split(",")[1].slice(0, -1));
+      // moving a piece
+      else {
         if (boardData[hex_x][hex_y]["pieces"]?.length !== 0) {
           for (const adjacent_hex of empty_hex_graph.adjacent(hex)) {
             const adjacent_hex_x = parseInt(adjacent_hex.split(",")[0].substring(1));
             const adjacent_hex_y = parseInt(adjacent_hex.split(",")[1].slice(0, -1));
             if (boardData[adjacent_hex_x][adjacent_hex_y]["pieces"]?.length === 0 || pieceType[0] === "Beetle") {
-              // check it wouldn't break the hive
-              full_board.indexOf([adjacent_hex_x, adjacent_hex_y]) === -1 && full_board.push([adjacent_hex_x, adjacent_hex_y])
+              if (JSON.stringify(boardData[hex_x][hex_y]["pieces"]?.at(-1)) !== JSON.stringify(pieceType)) {
+                // check it wouldn't break the hive
+                selection_hex_stage.indexOf([adjacent_hex_x, adjacent_hex_y]) === -1 && selection_hex_stage.push([adjacent_hex_x, adjacent_hex_y])
+              }
             }
           }
         }
       }
     }
-    selection_hexes = full_board;
+    selection_hexes = selection_hex_stage;
   }
 }
 

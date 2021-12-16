@@ -3,7 +3,7 @@ import Board from './Board'
 
 const container_style = {
   border: "1px solid grey", 
-  height: "80vh", 
+  height: "70vh", 
   width: "80vw", 
   borderRadius: "15px", 
   marginTop: "10px",

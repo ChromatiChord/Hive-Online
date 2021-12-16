@@ -2,7 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import BoardContainer from './components/util/BoardContainer'
 import Navbar from './components/util/Navbar'
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 function App() {
 
@@ -12,8 +12,16 @@ function App() {
   return (
     <>
       <center>
+        <Typography 
+        variant="h4"
+        sx={{
+          fontFamily: "Roboto",
+          margin: "14px"
+        }}
+        >
+          Turn {turn["counter"]}, {turn["colour"].charAt(0).toUpperCase() + turn["colour"].slice(1)}
+        </Typography>
         <BoardContainer {...{navbarSelection, turn, setTurn}} />
-        Turn {turn["counter"]}, {turn["colour"]}
         <Navbar {...{navbarSelection, setNavbarSelection, turn}}/>
       </center>
     </>

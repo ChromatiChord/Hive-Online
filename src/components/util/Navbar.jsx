@@ -1,18 +1,21 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { useFirstRender } from '../logic/FirstRenderCheck';
 import { useState, useEffect } from 'react';
 import { HexIcons } from '../../assets/ImageDatabase';
 
 const navbar_styling = {
   backgroundColor: "#e3e3e3",
-  borderRadius: "5px",
+  borderRadius: "20px",
   height: "15vh",
-  width: "96vw"
+  width: "96vw",
+  marginLeft: "2vw",
+  position: "absolute",
+  bottom: "0"
 }
 
 const pieces = ["Ant", "Beetle", "Grasshopper", "Spider", "Queen"];
 
-function getCorrectIcon(icon, colour, setNavSelect, blackPieceCount, whitePieceCount) {
+function getCorrectIcon(icon, colour, setNavSelect, blackPieceCount, whitePieceCount, navbarSelection) {
   let icon_img;
   switch(icon) {
     case "Ant":
@@ -37,9 +40,16 @@ function getCorrectIcon(icon, colour, setNavSelect, blackPieceCount, whitePieceC
   const img_style = {
     pointerEvents: (colour === "white" ? (whitePieceCount[icon] <= 0 ? "none" : "auto") : (blackPieceCount[icon] <= 0 ? "none" : "auto")),
     opacity: (colour === "white" ? (whitePieceCount[icon] <= 0 ? "0.3" : "1") : (blackPieceCount[icon] <= 0 ? "0.3" : "1")),
-    draggable: false
+    draggable: false,
+    width: "7vw",
+    margin: "0.8vw"
   }
-  return <img src={icon_img} style={img_style} onClick={() => setNavSelect([icon, colour])}/>
+  return (
+    <>
+      <img src={icon_img} style={img_style} onClick={() => setNavSelect([icon, colour])}/>
+      {navbarSelection[0] == icon && <img src={HexIcons["NavSelector"]} style={img_style}/>}
+    </>
+  )
 }
 
 function Navbar(props) {
@@ -84,9 +94,21 @@ function Navbar(props) {
     <div style={navbar_styling}>
       <Grid container spacing={2}>
       {pieces.map(icon => 
-        <Grid item xs={2.4} key={icon}>
-          {getCorrectIcon(icon, active_colour, props["setNavbarSelection"], blackPieceCount, whitePieceCount)}
-          {active_colour === "white" ? whitePieceCount[icon] : blackPieceCount[icon]}
+        <Grid item xs={2.25} key={icon}>
+          {getCorrectIcon(icon, active_colour, props["setNavbarSelection"], blackPieceCount, whitePieceCount, props["navbarSelection"])}
+          <Typography 
+          variant="h4"
+          sx={{
+            fontFamily: "Roboto",
+            margin: "5%",
+            border: "2.5px solid black",
+            borderRadius: "50%",
+            width: "2.1vw",
+            backgroundColor: "white"
+          }}
+          >
+            {active_colour === "white" ? whitePieceCount[icon] : blackPieceCount[icon]}
+          </Typography>
         </Grid>
       )}
       </Grid>

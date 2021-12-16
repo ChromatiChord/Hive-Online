@@ -9,6 +9,7 @@ import QueenWhite from './pieces/QueenWhite.png'
 import QueenBlack from './pieces/QueenBlack.png'
 import SpiderWhite from './pieces/SpiderWhite.png'
 import SpiderBlack from './pieces/SpiderBlack.png'
+import NavSelector from './pieces/NavSelector.png'
 
 
 export const HexIcons = {
@@ -22,5 +23,6 @@ export const HexIcons = {
   "QueenWhite": QueenWhite,
   "QueenBlack": QueenBlack,
   "SpiderWhite": SpiderWhite,
-  "SpiderBlack": SpiderBlack
+  "SpiderBlack": SpiderBlack,
+  "NavSelector": NavSelector
 }
